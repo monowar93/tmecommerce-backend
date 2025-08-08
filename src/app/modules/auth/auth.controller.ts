@@ -34,11 +34,7 @@ const credentialsLogin = catchAsync(
         success: true,
         statusCode: httpStatus.OK,
         message: "Log In Successfully",
-        data: {
-          accessToken: userTokens.accessToken,
-          refreshToken: userTokens.refreshToken,
-          user: userWithoutPassword,
-        },
+        data: userWithoutPassword,
       });
     })(req, res, next);
   },
@@ -113,25 +109,6 @@ const logout = catchAsync(
   },
 );
 
-//*---------------------------------------------Set Password----------------------------
-const setPassword = catchAsync(
-  async (req: Request, res: Response, next: NextFunction) => {
-    const decodedToken = req.user as JwtPayload;
-    const { password } = req.body;
-    const changedPassword = await AuthServices.setPassword(
-      decodedToken.userId,
-      password,
-    );
-
-    sendResponse(res, {
-      success: true,
-      statusCode: httpStatus.CREATED,
-      message: "Password reset successfully",
-      data: changedPassword.message,
-    });
-  },
-);
-
 //*---------------------------------------------change Password----------------------------
 const changePassword = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
@@ -193,7 +170,6 @@ export const AuthController = {
   getNewAccessToken,
   googleCallback,
   logout,
-  setPassword,
   changePassword,
   forgotPassword,
   resetPassword,

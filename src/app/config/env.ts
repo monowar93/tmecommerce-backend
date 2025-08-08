@@ -28,6 +28,13 @@ interface EnvConfig {
   REDIS_PORT: string;
   REDIS_USERNAME: string;
   REDIS_PASSWORD: string;
+  CLOUDINARY: {
+    CLOUDINARY_CLOUD_NAME: string;
+    CLOUDINARY_API_KEY: string;
+    CLOUDINARY_API_SECRET: string;
+  };
+  UPSTASH_REDIS_URL: string;
+  UPSTASH_REDIS_TTL: string;
 }
 
 const loadEnvVariables = (): EnvConfig => {
@@ -55,6 +62,11 @@ const loadEnvVariables = (): EnvConfig => {
     "REDIS_PORT",
     "REDIS_USERNAME",
     "REDIS_PASSWORD",
+    "CLOUDINARY_CLOUD_NAME",
+    "CLOUDINARY_API_KEY",
+    "CLOUDINARY_API_SECRET",
+    "UPSTASH_REDIS_URL",
+    "UPSTASH_REDIS_TTL",
   ];
 
   requiredEnvVariables.forEach((key) => {
@@ -90,6 +102,13 @@ const loadEnvVariables = (): EnvConfig => {
     REDIS_PORT: process.env.REDIS_PORT as string,
     REDIS_USERNAME: process.env.REDIS_USERNAME as string,
     REDIS_PASSWORD: process.env.REDIS_PASSWORD as string,
+    CLOUDINARY: {
+      CLOUDINARY_CLOUD_NAME: process.env.CLOUDINARY_CLOUD_NAME as string,
+      CLOUDINARY_API_KEY: process.env.CLOUDINARY_API_KEY as string,
+      CLOUDINARY_API_SECRET: process.env.CLOUDINARY_API_SECRET as string,
+    },
+    UPSTASH_REDIS_URL: process.env.UPSTASH_REDIS_URL as string,
+    UPSTASH_REDIS_TTL: process.env.UPSTASH_REDIS_TTL as string,
   };
 };
 export const envVars = loadEnvVariables();

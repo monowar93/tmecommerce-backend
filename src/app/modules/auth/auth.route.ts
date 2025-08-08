@@ -24,20 +24,13 @@ router.get("/google", (req: Request, res: Response, next: NextFunction) => {
 router.get(
   "/google/callback",
   passport.authenticate("google", {
-    failureRedirect: `${envVars.FRONTEND_URL}/sign-in?error=There is some issues with your account. Please contact with out support team!`,
+    failureRedirect: `${envVars.FRONTEND_URL}/sign-in?error=You are Blocked. Please contact with out support team!`,
   }),
   AuthController.googleCallback,
 );
 
 //Route api/v1/auth/logout
 router.post("/logout", AuthController.logout);
-
-//Route api/v1/auth/set-password
-router.post(
-  "/set-password",
-  checkAuth(...Object.values(Role)),
-  AuthController.setPassword,
-);
 
 //Route api/v1/auth/change-password
 router.post(

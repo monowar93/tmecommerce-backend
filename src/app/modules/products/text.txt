@@ -1,0 +1,73 @@
+// src/features/products/productsApi.ts
+
+import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
+
+export const productsApi = createApi({
+  reducerPath: 'productsApi',
+  baseQuery: fetchBaseQuery({ baseUrl: '/api/' }),
+  endpoints: (builder) => ({
+    getAllProducts: builder.query<any, Record<string, string | number>>({
+      query: (params) => {
+        const queryString = new URLSearchParams(params as any).toString();
+        return `products?${queryString}`;
+      },
+      providesTags: (result) =>
+        result?.products
+          ? [
+              ...result.products.map(({ _id }: any) => ({
+                type: 'Products' as const,
+                id: _id,
+              })),
+              { type: 'Products', id: 'LIST' },
+            ]
+          : [{ type: 'Products', id: 'LIST' }],
+    }),
+    }),
+  }),
+});
+
+
+invalidatesTags: [{ type: 'Products', id: 'LIST' }],
+
+
+
+
+export const { useGetAllProductsQuery } = productsApi;
+
+
+
+
+popular products
+
+const { data, isLoading } = useGetAllProductsQuery({
+  sort: '-numOfReviews,-ratings',
+});
+
+latest products
+const { data, isLoading } = useGetAllProductsQuery({
+  sort: '-createdAt',
+});
+
+old to new
+const { data, isLoading } = useGetAllProductsQuery({
+  sort: 'createdAt',
+});
+
+category
+const { data, isLoading } = useGetAllProductsQuery({
+  category: 'electronics',
+  sort: 'createdAt',
+});
+
+all products
+const { data, isLoading } = useGetAllProductsQuery({
+  category: 'clothing',
+  rating: '4,5',
+  'price[gte]': 100,
+  'price[lte]': 1000,
+  sort: '-price',
+});
+
+
+⚠️ Note: Keys like 'price[gte]' need to be quoted because of the [].
+

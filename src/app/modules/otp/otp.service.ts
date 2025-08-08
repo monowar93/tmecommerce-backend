@@ -36,7 +36,7 @@ const sendOTP = async (email: string, name: string) => {
     },
   });
 
-  sendEmail({
+  await sendEmail({
     to: email,
     subject: "Your OTP Code",
     templateName: "otp",

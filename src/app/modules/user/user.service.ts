@@ -8,6 +8,7 @@ import { QueryBuilder } from "../../utils/queryBuilder";
 import { JwtPayload } from "jsonwebtoken";
 import { envVars } from "../../config/env";
 import { verifyToken } from "../../utils/jwt";
+import { deleteImageFromCloudinary } from "../../config/cloudinary.config";
 
 //*--------------------------------------------------------- create user------------------------------------------------
 const createUser = async (payload: Partial<IUser>) => {
@@ -135,12 +136,29 @@ const updateUser = async (
     if (decodedToken.role === Role.USER) {
       throw new AppError(httpStatus.FORBIDDEN, "You are not authorized");
     }
+    if (decodedToken.userId === ifUserExist._id.toString()) {
+      throw new AppError(
+        httpStatus.FORBIDDEN,
+        "You cannot update your own role",
+      );
+    }
   }
 
   //its work when user want update there isactive/is deleted status
-  if (payload.isActive || payload.isVerified) {
+  if (payload.isVerified) {
     if (decodedToken.role === Role.USER) {
       throw new AppError(httpStatus.FORBIDDEN, "You are not authorized");
+    }
+  }
+  if (payload.isActive === "ACTIVE" || payload.isActive === "BLOCKED") {
+    if (decodedToken.role === Role.USER) {
+      throw new AppError(httpStatus.FORBIDDEN, "You are not authorized");
+    }
+    if (decodedToken.userId === ifUserExist._id.toString()) {
+      throw new AppError(
+        httpStatus.FORBIDDEN,
+        "You Cannot Update Your Own Status",
+      );
     }
   }
 

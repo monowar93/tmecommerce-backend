@@ -1,6 +1,27 @@
 import z from "zod";
 import { IsActive, Role } from "./user.interface";
 
+const shippingAddressSchema = z.object({
+  name: z.string().max(50, "Name cannot exceed 50 characters").optional(),
+  phone: z
+    .string({
+      error: (issue) =>
+        issue.code === "invalid_type"
+          ? "Phone number must be a string"
+          : undefined,
+    })
+    .regex(/^\+?[1-9]\d{1,14}$/, {
+      message:
+        "Phone number must be a valid international number in E.164 format",
+    })
+    .optional(),
+  address: z
+    .string()
+    .max(100, "Address cannot exceed 100 characters")
+    .optional(),
+  city: z.string().max(30, "City cannot exceed 30 characters").optional(),
+});
+
 //user register ZOD validations
 export const createUserZodSchema = z.object({
   name: z
@@ -89,11 +110,6 @@ export const updateUserZodSchema = z.object({
           : undefined,
     })
     .optional(),
-  address: z
-    .string({
-      error: (issue) =>
-        issue.code === "invalid_type" ? "Address must be a string" : undefined,
-    })
-    .max(200, { message: "Address cannot exceed 200 characters." })
-    .optional(),
+  shippingAddress: shippingAddressSchema.optional(),
+  picture: z.string().optional(),
 });

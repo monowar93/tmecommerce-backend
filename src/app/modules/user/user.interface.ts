@@ -22,8 +22,16 @@ export interface IUser {
   email: string;
   password?: string;
   phone?: string;
-  picture?: string;
-  address?: string;
+  picture?: {
+    public_id?: string;
+    url?: string;
+  };
+  shippingAddress?: {
+    name: string;
+    phone: string;
+    address: string;
+    city: string;
+  };
   isActive?: IsActive;
   isVerified?: boolean;
   role: Role;

@@ -18,7 +18,41 @@ export class QueryBuilder<T> {
       delete filter[field];
     }
 
-    this.modelQuery = this.modelQuery.find(filter); // Tour.find().find(filter)
+    const mongoFilter: Record<string, any> = {};
+
+    // for (const key in filter) {
+    //   const value = filter[key];
+
+    //   // Handle multiple values (e.g., role=ADMIN&role=SUPER_ADMIN)
+    //   if (Array.isArray(value)) {
+    //     mongoFilter[key] = { $in: value };
+    //   } else if (typeof value === "string" && value.includes(",")) {
+    //     // Handle comma-separated strings: role=ADMIN,SUPER_ADMIN
+    //     mongoFilter[key] = { $in: value.split(",") };
+    //   } else {
+    //     mongoFilter[key] = value;
+    //   }
+    // }
+
+    for (const key in filter) {
+      const value = filter[key];
+
+      if (
+        value &&
+        typeof value === "object" &&
+        !Array.isArray(value) &&
+        !Buffer.isBuffer(value)
+      ) {
+        mongoFilter[key] = value;
+      } else if (Array.isArray(value)) {
+        mongoFilter[key] = { $in: value };
+      } else if (typeof value === "string" && value.includes(",")) {
+        mongoFilter[key] = { $in: value.split(",") };
+      } else {
+        mongoFilter[key] = value;
+      }
+    }
+    this.modelQuery = this.modelQuery.find(mongoFilter);
 
     return this;
   }

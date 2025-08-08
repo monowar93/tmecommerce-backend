@@ -5,11 +5,15 @@ import session from "express-session";
 import passport from "passport";
 import { envVars } from "./app/config/env";
 import "./app/config/passport";
+import { connectUpstash } from "./app/config/uptash.redis";
 import { globalErrorHandler } from "./app/middleware/globalErrorHandler";
 import { notFound } from "./app/middleware/notFound";
 import { router } from "./app/routes";
 
 const app = express();
+const redisUrl = envVars.UPSTASH_REDIS_URL || "";
+
+export const UpstashRedis = connectUpstash(redisUrl);
 
 // Middleware for parsing JSON and URL-encoded data  body-parser lage na
 app.use(express.json());

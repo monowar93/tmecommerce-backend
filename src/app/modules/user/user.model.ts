@@ -19,8 +19,16 @@ const userSchema = new Schema<IUser>(
     password: { type: String },
     role: { type: String, enum: Object.values(Role), default: Role.USER },
     phone: { type: String },
-    picture: { type: String },
-    address: { type: String },
+    picture: {
+      public_id: { type: String },
+      url: { type: String },
+    },
+    shippingAddress: {
+      name: { type: String },
+      phone: { type: String },
+      address: { type: String },
+      city: { type: String },
+    },
     isActive: {
       type: String,
       enum: Object.values(IsActive),

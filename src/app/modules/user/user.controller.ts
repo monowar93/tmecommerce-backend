@@ -1,14 +1,14 @@
 import { NextFunction, Request, Response } from "express";
 import httpStatus from "http-status-codes";
-import { sendResponse } from "../../utils/sendResponse";
-import { catchAsync } from "../../utils/catchAsync";
-import { UserServices } from "./user.service";
 import { JwtPayload } from "jsonwebtoken";
-import { envVars } from "../../config/env";
-import AppError from "../../error/AppError";
-import { verifyToken } from "../../utils/jwt";
+import { catchAsync } from "../../utils/catchAsync";
+import { sendResponse } from "../../utils/sendResponse";
+import { UserServices } from "./user.service";
+import {
+  deleteImageFromCloudinary,
+  uploadToCloudinary,
+} from "../../config/cloudinary.config";
 import { User } from "./user.model";
-import { IsActive } from "./user.interface";
 
 //*---------------------------------------------Create User----------------------------
 const createUser = catchAsync(
@@ -80,6 +80,14 @@ const updateUser = catchAsync(
     const verifiedToken = req.user;
     const payload = req.body;
 
+    if (req.file) {
+      const picture = req.file as Express.Multer.File;
+      const uploadResult = await uploadToCloudinary(picture, "profile");
+      payload.picture = uploadResult[0];
+    }
+
+    const oldUser = await User.findById(userId);
+
     const user = await UserServices.updateUser(
       userId,
       payload,
@@ -92,6 +100,15 @@ const updateUser = catchAsync(
       message: "User Updated Successfully",
       data: user,
     });
+
+    if (
+      oldUser?.picture?.public_id &&
+      oldUser.picture.public_id !== payload.picture?.public_id
+    ) {
+      deleteImageFromCloudinary(oldUser.picture.public_id).catch((err) => {
+        console.error("Failed to delete old profile image:", err);
+      });
+    }
   },
 );
 

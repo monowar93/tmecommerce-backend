@@ -21,45 +21,6 @@ const getNewAccessToken = async (refreshToken: string) => {
   };
 };
 
-//*---------------------------------------------Set Password ----------------------------
-
-const setPassword = async (userId: string, plainPassword: string) => {
-  const user = await User.findById(userId);
-  if (!user) {
-    throw new AppError(httpStatus.NOT_FOUND, "User not found");
-  }
-
-  if (
-    user.password &&
-    user.auths.some((providerObject) => providerObject.provider === "google")
-  ) {
-    throw new AppError(
-      httpStatus.BAD_REQUEST,
-      "You have already set password,please change your password",
-    );
-  }
-
-  const hashedPassword = await bcryptjs.hash(
-    plainPassword,
-    Number(envVars.BCRYPT_SALT_ROUND),
-  );
-
-  const credentialProvider: IAuthProvider = {
-    provider: "credentials",
-    providerId: user.email,
-  };
-  const auth: IAuthProvider[] = [...user.auths, credentialProvider];
-
-  user.password = hashedPassword;
-  user.auths = auth;
-
-  await user.save();
-
-  return {
-    message: "Password updated successfully",
-  };
-};
-
 //*---------------------------------------------change Password ----------------------------
 
 const changePassword = async (
@@ -71,6 +32,13 @@ const changePassword = async (
   const user = await User.findById(decodedToken.userId);
   if (!user) {
     throw new AppError(httpStatus.NOT_FOUND, "User not found");
+  }
+
+  if (!user.password) {
+    throw new AppError(
+      httpStatus.NOT_FOUND,
+      "You may have logged in via Google, Facebook, or GitHub.",
+    );
   }
 
   // 2. Compare old password
@@ -129,7 +97,7 @@ const forgotPassword = async (email: string) => {
 
   const resetUILink = `${envVars.FRONTEND_URL}/reset-password?id=${isUserExist._id}&token=${resetToken}`;
 
-  sendEmail({
+  await sendEmail({
     to: isUserExist.email,
     subject: "Password Reset",
     templateName: "forgetPassword",
@@ -196,7 +164,6 @@ const resetPassword = async (
 //All exports
 export const AuthServices = {
   getNewAccessToken,
-  setPassword,
   changePassword,
   forgotPassword,
   resetPassword,

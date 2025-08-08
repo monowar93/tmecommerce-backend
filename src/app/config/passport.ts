@@ -9,6 +9,7 @@ import { Strategy as LocalStrategy } from "passport-local";
 import { IAuthProvider, IsActive, Role } from "../modules/user/user.interface";
 import { User } from "../modules/user/user.model";
 import { envVars } from "./env";
+import { v2 as cloudinary } from "cloudinary";
 
 function capitalize(str: string) {
   return str.charAt(0).toUpperCase() + str.slice(1);
@@ -34,7 +35,7 @@ passport.use(
 
         if (isUserExist.isActive === IsActive.BLOCKED) {
           return done(null, false, {
-            message: `User is Blocked`,
+            message: `User is Blocked, Please contact out support team`,
           });
         }
 
@@ -102,10 +103,22 @@ passport.use(
         let user = await User.findOne({ email });
 
         if (!user) {
+          const uploadedResponse = await cloudinary.uploader.upload(
+            profile.photos?.[0].value!,
+            {
+              folder: "tm_ecommerce/profile_image",
+            },
+          );
+
+          const { public_id, secure_url } = uploadedResponse;
+
           user = new User({
             name: profile.displayName,
             email: email,
-            picture: profile.photos?.[0].value,
+            picture: {
+              public_id,
+              url: secure_url,
+            },
             role: Role.USER,
             isVerified: true,
             auths: [
