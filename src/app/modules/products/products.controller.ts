@@ -90,6 +90,23 @@ const getAllProducts = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
+//*------------------------------------------------------------------Get some product--------------------------------------
+
+const getSomeProducts = catchAsync(async (req: Request, res: Response) => {
+  const query = req.query;
+  const result = await ProductsService.getSomeProducts(
+    query as Record<string, string>,
+  );
+
+  sendResponse(res, {
+    statusCode: 201,
+    success: true,
+    message: "Products retrieved successful",
+    data: result.products,
+    meta: result.meta,
+  });
+});
+
 //*------------------------------------------------------------------Get getPriceRange --------------------------------------
 
 const getPriceRange = catchAsync(async (req: Request, res: Response) => {
@@ -122,6 +139,7 @@ export const ProductsControllers = {
   getSingleProduct,
   deleteProduct,
   getAllProducts,
+  getSomeProducts,
   getPriceRange,
   categories,
 };

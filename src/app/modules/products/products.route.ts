@@ -22,6 +22,9 @@ router.post(
 // Get all product with filter - /api/v1/product/all
 router.get("/all", ProductsControllers.getAllProducts);
 
+// Get all product with ids array for wishlist
+router.get("/some", ProductsControllers.getSomeProducts);
+
 // Get price - /api/v1/product/price-range
 router.get("/price-range", ProductsControllers.getPriceRange);
 

@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>New Newsletter Subscription</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #f4f6f8;
+        margin: 0;
+        padding: 20px;
+      }
+      .email-container {
+        max-width: 500px;
+        margin: auto;
+        background-color: #ffffff;
+        padding: 30px;
+        border-radius: 8px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      }
+      h2 {
+        font-size: 22px;
+        color: #333;
+        margin-bottom: 15px;
+      }
+      p {
+        font-size: 16px;
+        color: #555;
+        margin-bottom: 15px;
+      }
+      .highlight {
+        color: #e53935;
+        font-weight: bold;
+      }
+      .footer {
+        font-size: 14px;
+        color: #888;
+        margin-top: 30px;
+        text-align: center;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="email-container">
+      <h2>New Newsletter Subscription</h2>
+      <p>A new user has subscribed to your newsletter!</p>
+      <p><strong>Email:</strong> <span class="highlight"><%= email %></span></p>
+      <p>
+        Keep track of your subscribers to send exclusive updates, offers, and
+        promotions.
+      </p>
+      <div class="footer">
+        &copy; <%= new Date().getFullYear() %> Tarek Monowar. All rights
+        reserved.
+      </div>
+    </div>
+  </body>
+</html>

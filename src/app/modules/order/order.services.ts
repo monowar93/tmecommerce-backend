@@ -9,6 +9,7 @@ import httpStatus from "http-status-codes";
 import { UpstashRedis } from "../../../app";
 import { envVars } from "../../config/env";
 import { Role } from "../user/user.interface";
+import { QueryBuilder } from "../../utils/queryBuilder";
 
 const redisTTL = envVars.UPSTASH_REDIS_TTL;
 
@@ -59,48 +60,83 @@ const newOrder = async (payload: OrderPayload, decodedToken: JwtPayload) => {
 };
 
 //*---------------------------------------------------------------My orders-----------------------------------------
-const myOrders = async (decodedToken: JwtPayload) => {
+const myOrders = async (
+  decodedToken: JwtPayload,
+  query: Record<string, string>,
+) => {
   const userId = decodedToken.userId;
 
   const user = await User.findById(userId);
   if (!user) {
     throw new AppError(httpStatus.NOT_FOUND, "User not found");
   }
-  const key = `my-orders-${user._id}`;
-  let orders;
+  const key = `my-orders-${user._id}-${JSON.stringify(query)}`;
+  let orders, meta;
+
   const cached = await UpstashRedis.get(key);
   if (cached) {
-    orders = JSON.parse(cached);
+    const data = JSON.parse(cached);
+    orders = data.orders;
+    meta = data.meta;
   } else {
-    orders = await Order.find({ user: userId }).sort({ createdAt: -1 });
-    if (!orders) {
-      throw new AppError(httpStatus.NOT_FOUND, "Order not found");
-    }
-    await UpstashRedis.setex(key, redisTTL, JSON.stringify(orders));
-  }
+    const queryBuilder = new QueryBuilder(Order.find({ user: userId }), query);
+    const ordersData = queryBuilder.filter().sort().fields().paginate();
 
-  return orders;
+    const [data, metaData] = await Promise.all([
+      ordersData.build(),
+      queryBuilder.getMeta(),
+    ]);
+
+    orders = data;
+    meta = metaData;
+
+    if (!orders || orders.length === 0) {
+      throw new AppError(httpStatus.NOT_FOUND, "Orders not found");
+    }
+
+    await UpstashRedis.setex(key, redisTTL, JSON.stringify({ orders, meta }));
+  }
+  return {
+    data: orders,
+    meta,
+  };
 };
 
 //*---------------------------------------------------------------All orders-----------------------------------------
-const allOrders = async () => {
-  const key = `all-orders`;
-  let orders;
+const allOrders = async (query: Record<string, string>) => {
+  const key = `all-orders-${JSON.stringify(query)}`;
+  let orders, meta;
+
   const cached = await UpstashRedis.get(key);
   if (cached) {
-    orders = JSON.parse(cached);
+    const data = JSON.parse(cached);
+    orders = data.orders;
+    meta = data.meta;
   } else {
-    orders = await Order.find()
-      .populate("user", "name")
-      .sort({ createdAt: -1 });
+    const queryBuilder = new QueryBuilder(
+      Order.find().populate("user", "name"),
+      query,
+    );
+    const ordersData = queryBuilder.filter().sort().fields().paginate();
 
-    if (!orders) {
+    const [data, metaData] = await Promise.all([
+      ordersData.build(),
+      queryBuilder.getMeta(),
+    ]);
+
+    orders = data;
+    meta = metaData;
+
+    if (!orders || orders.length === 0) {
       throw new AppError(httpStatus.NOT_FOUND, "Orders not found");
     }
-    await UpstashRedis.setex(key, redisTTL, JSON.stringify(orders));
+    await UpstashRedis.setex(key, redisTTL, JSON.stringify({ orders, meta }));
   }
 
-  return orders;
+  return {
+    data: orders,
+    meta,
+  };
 };
 
 //*---------------------------------------------------------------get single order-----------------------------------------

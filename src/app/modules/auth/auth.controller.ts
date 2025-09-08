@@ -10,7 +10,7 @@ import { createUserTokens } from "../../utils/userTokens";
 import { setAuthCookies } from "../../utils/setCookies";
 import { AuthServices } from "./auth.service";
 
-const isProduction = envVars.NODE_ENV === "production";
+// const isProduction = envVars.NODE_ENV === "production";
 
 //*---------------------------------------------Login Users---------------------------->
 const credentialsLogin = catchAsync(
@@ -81,6 +81,7 @@ const googleCallback = catchAsync(
     const tokenInfo = createUserTokens(user);
 
     setAuthCookies(res, tokenInfo);
+
     res.redirect(`${envVars.FRONTEND_URL}/${redirectTo}?loginSuccess=true`);
   },
 );

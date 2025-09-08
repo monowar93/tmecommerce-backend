@@ -242,6 +242,51 @@ const getAllProducts = async (query: Record<string, any>) => {
   };
 };
 
+//*------------------------------------Get some Product ---------------------------------------------
+
+const getSomeProducts = async (query: Record<string, any>) => {
+  let products;
+  let meta;
+
+  const filterQuery: Record<string, any> = { ...query };
+
+  // If filtering by multiple IDs (wishlist)
+  if (filterQuery.ids && typeof filterQuery.ids === "string") {
+    filterQuery._id = { $in: filterQuery.ids.split(",") };
+    delete filterQuery.ids;
+  }
+
+  // Generate a Redis key based on the query
+  const key = `products:filter:${Object.entries(filterQuery)
+    .sort(([a], [b]) => a.localeCompare(b))
+    .map(([key, val]) => `${key}:${JSON.stringify(val)}`)
+    .join("|")}`;
+
+  // Check Redis first
+  const cached = await UpstashRedis.get(key);
+  if (cached) {
+    const data = JSON.parse(cached);
+    return { products: data.products, meta: data.meta };
+  }
+
+  const queryBuilder = new QueryBuilder(Product.find(), filterQuery);
+  const productsData = queryBuilder.filter().sort().fields().paginate();
+
+  const [data, metaData] = await Promise.all([
+    productsData.build(),
+    queryBuilder.getMeta(),
+  ]);
+
+  products = data;
+  meta = metaData;
+  await UpstashRedis.setex(key, redisTTL, JSON.stringify({ products, meta }));
+
+  return {
+    products,
+    meta,
+  };
+};
+
 //*------------------------------------get getPriceRange ---------------------------------------------
 
 const getPriceRange = async () => {
@@ -290,6 +335,7 @@ export const ProductsService = {
   getSingleProduct,
   deleteProduct,
   getAllProducts,
+  getSomeProducts,
   getPriceRange,
   categories,
 };

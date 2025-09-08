@@ -20,20 +20,6 @@ export class QueryBuilder<T> {
 
     const mongoFilter: Record<string, any> = {};
 
-    // for (const key in filter) {
-    //   const value = filter[key];
-
-    //   // Handle multiple values (e.g., role=ADMIN&role=SUPER_ADMIN)
-    //   if (Array.isArray(value)) {
-    //     mongoFilter[key] = { $in: value };
-    //   } else if (typeof value === "string" && value.includes(",")) {
-    //     // Handle comma-separated strings: role=ADMIN,SUPER_ADMIN
-    //     mongoFilter[key] = { $in: value.split(",") };
-    //   } else {
-    //     mongoFilter[key] = value;
-    //   }
-    // }
-
     for (const key in filter) {
       const value = filter[key];
 
@@ -97,7 +83,11 @@ export class QueryBuilder<T> {
   }
 
   async getMeta() {
-    const totalDocuments = await this.modelQuery.model.countDocuments();
+    const filterQuery = this.modelQuery.getQuery();
+
+    const totalDocuments = await this.modelQuery.model.countDocuments(
+      filterQuery,
+    );
 
     const page = Number(this.query.page) || 1;
     const limit = Number(this.query.limit) || 20;

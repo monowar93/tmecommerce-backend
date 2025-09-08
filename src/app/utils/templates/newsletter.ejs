@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Newsletter Subscription</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #f4f6f8;
+        margin: 0;
+        padding: 20px;
+      }
+      .email-container {
+        max-width: 500px;
+        margin: auto;
+        background-color: #ffffff;
+        padding: 30px;
+        border-radius: 8px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      }
+      h2 {
+        font-size: 24px;
+        color: #333;
+        margin-bottom: 10px;
+      }
+      p {
+        font-size: 16px;
+        color: #555;
+        margin-bottom: 20px;
+      }
+      .highlight {
+        color: #e53935;
+        font-weight: bold;
+      }
+
+      .footer {
+        font-size: 14px;
+        color: #888;
+        margin-top: 30px;
+        text-align: center;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="email-container">
+      <p>Thank you for subscribing to our newsletter! 🎉</p>
+
+      <p>
+        Use code <span class="highlight">NEW10</span> for 10% off your first
+        purchase.
+      </p>
+      <p>
+        You will now receive exclusive updates on >new products, special
+        discounts, and exciting offers directly in your inbox.
+      </p>
+      <a
+        href="https://tm-ecommerce.vercel.app/"
+        style="
+          display: inline-block;
+          padding: 12px 24px;
+          background: #007bff;
+          color: #fff !important;
+          text-decoration: none;
+          border-radius: 4px;
+          margin-top: 15px;
+          font-size: 17px;
+          font-weight: bold;
+          text-align: center;
+        "
+        >Visit Our Store</a
+      >
+      <div class="footer">
+        &copy; <%= new Date().getFullYear() %> Tarek Monowar. All rights
+        reserved.
+      </div>
+    </div>
+  </body>
+</html>

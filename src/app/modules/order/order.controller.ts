@@ -4,6 +4,8 @@ import httpStatus from "http-status-codes";
 import { NextFunction, Request, Response } from "express";
 import { OrderServices } from "./order.services";
 import { JwtPayload } from "jsonwebtoken";
+import { QueryBuilder } from "../../utils/queryBuilder";
+import { Order } from "./order.model";
 
 //*---------------------------------------------New Order----------------------------
 const newOrder = catchAsync(
@@ -29,14 +31,19 @@ const newOrder = catchAsync(
 const myOrders = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
     const verifiedToken = req.user;
+    const query = req.query;
 
-    const result = await OrderServices.myOrders(verifiedToken as JwtPayload);
+    const result = await OrderServices.myOrders(
+      verifiedToken as JwtPayload,
+      query as Record<string, string>,
+    );
 
     sendResponse(res, {
       success: true,
       statusCode: httpStatus.CREATED,
       message: "Order Retrieved Successful",
-      data: result,
+      data: result.data,
+      meta: result.meta,
     });
   },
 );
@@ -44,13 +51,18 @@ const myOrders = catchAsync(
 //*---------------------------------------------All Orders----------------------------
 const allOrders = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
-    const result = await OrderServices.allOrders();
+    const query = req.query;
+
+    const result = await OrderServices.allOrders(
+      query as Record<string, string>,
+    );
 
     sendResponse(res, {
       success: true,
       statusCode: httpStatus.CREATED,
       message: "All Order Retrieved Successful",
-      data: result,
+      data: result.data,
+      meta: result.meta,
     });
   },
 );
