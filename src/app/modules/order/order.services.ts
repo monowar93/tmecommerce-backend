@@ -70,7 +70,7 @@ const myOrders = async (
   if (!user) {
     throw new AppError(httpStatus.NOT_FOUND, "User not found");
   }
-  const key = `my-orders-${user._id}-${JSON.stringify(query)}`;
+  const key = `my-orders-${user._id}`;
   let orders, meta;
 
   const cached = await UpstashRedis.get(key);
@@ -104,7 +104,7 @@ const myOrders = async (
 
 //*---------------------------------------------------------------All orders-----------------------------------------
 const allOrders = async (query: Record<string, string>) => {
-  const key = `all-orders-${JSON.stringify(query)}`;
+  const key = `all-orders`;
   let orders, meta;
 
   const cached = await UpstashRedis.get(key);
