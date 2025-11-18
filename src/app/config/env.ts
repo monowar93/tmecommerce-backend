@@ -37,6 +37,7 @@ interface EnvConfig {
   UPSTASH_REDIS_TTL: string;
   STRIPE_SECRET_KEY: string;
   STRIPE_PUBLIC_KEY: string;
+  GEMINI_API_KEY: string;
 }
 
 const loadEnvVariables = (): EnvConfig => {
@@ -71,6 +72,7 @@ const loadEnvVariables = (): EnvConfig => {
     "UPSTASH_REDIS_TTL",
     "STRIPE_SECRET_KEY",
     "STRIPE_PUBLIC_KEY",
+    "GEMINI_API_KEY",
   ];
 
   requiredEnvVariables.forEach((key) => {
@@ -115,6 +117,7 @@ const loadEnvVariables = (): EnvConfig => {
     UPSTASH_REDIS_TTL: process.env.UPSTASH_REDIS_TTL as string,
     STRIPE_SECRET_KEY: process.env.STRIPE_SECRET_KEY as string,
     STRIPE_PUBLIC_KEY: process.env.STRIPE_PUBLIC_KEY as string,
+    GEMINI_API_KEY: process.env.GEMINI_API_KEY as string,
   };
 };
 export const envVars = loadEnvVariables();

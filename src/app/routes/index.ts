@@ -7,6 +7,7 @@ import { CouponRoutes } from "../modules/coupon/coupon.route";
 import { PaymentRoutes } from "../modules/payment/payment.route";
 import { OrderRoutes } from "../modules/order/order.route";
 import { SupportRoutes } from "../modules/support/support.route";
+import { AiRoutes } from "../modules/Ai/ai.route";
 
 export const router = Router();
 
@@ -42,6 +43,10 @@ const moduleRoutes = [
   {
     path: "/support",
     route: SupportRoutes,
+  },
+  {
+    path: "/ai",
+    route: AiRoutes,
   },
 ];
 
