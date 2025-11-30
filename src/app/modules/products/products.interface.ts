@@ -1,11 +1,6 @@
 import { Types } from "mongoose";
 
-export const ProductSearchableFields = [
-  "name",
-  "category",
-  "brand",
-  "description",
-];
+export const ProductSearchableFields = ["name", "category", "brand"];
 
 export interface IProducts {
   _id?: Types.ObjectId;
