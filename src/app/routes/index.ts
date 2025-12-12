@@ -54,7 +54,7 @@ const moduleRoutes = [
     route: StatsRoutes,
   },
 ];
-
+// ---------------> All module routes registered here <--------------- //
 moduleRoutes.forEach((route) => {
   router.use(route.path, route.route);
 });
