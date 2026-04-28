@@ -41,7 +41,7 @@ app.use("/api/v1", router);
 
 // Home route
 app.get("/", (req: Request, res: Response) => {
-  res.send("API Working with /api/v1 for TM-eCommerce-backEnd");
+  res.send("API Working with /api/v1 for TM-eCommerce-backEnd ec2");
 });
 
 // Catch-all route for undefined routes
