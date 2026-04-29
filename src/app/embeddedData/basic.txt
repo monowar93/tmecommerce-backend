@@ -1,0 +1,125 @@
+TM-ECommerce Website Context
+
+Website Name: TM-ECommerce
+Website URL: https://tm-ecommerce.vercel.app
+
+Creator:
+Tarek Monowar from Sylhet, Bangladesh is the developer of this website.
+He is a Full-Stack Web Developer experienced in MERN Stack, Next.js, React, Node.js, Express, MongoDB, PostgreSQL, Prisma, CI/CD,AWS ,Ai ,Ai-automation,RAG, Docker, Tailwind CSS, shadcn/ui, animation libraries, and TypeScript.
+He has built 3 to 4 industry-standard websites with full features, including e-commerce websites, ride booking applications, and hospital management apps.
+
+Creator Links:
+LinkedIn: https://www.linkedin.com/in/tarekmonowar
+Portfolio: https://tarekmonowar.vercel.app or tarekmonowar.dev
+Email: tarekmonowar353@gmail.com
+
+Education:
+Bachelor of Science from Sylhet MC College
+Currently pursuing a master's in Physics
+
+Project Overview:
+TM-ECommerce is an industry-standard full-stack e-commerce project that showcases advanced development skills.
+It is designed as a complete showcase website with all major e-commerce features.
+
+Project Type:
+ECommerce platform
+
+Main Features:
+Product listing
+Product details page
+Product search and filtering
+Add to cart
+Wishlist
+Checkout with Stripe
+Invoice generation
+Real-time order tracking
+ai-tools
+RAG
+vector Db 
+ai chat boot
+Email notifications
+User authentication with email/password, Google, Facebook, and GitHub
+JWT-based session management in cookies
+Demo user and admin accounts for easy exploration
+
+Admin Dashboard:
+Real-time statistics
+User management
+Product management
+Order management
+Revenue tracking
+Notifications when new orders are placed
+Admin can block users and manage orders
+All important updates appear in real time
+
+Security and Performance:
+bcrypt password hashing
+Zod validation
+Data sanitization
+Redis for performance
+Cloudinary for media storage
+Strong security practices throughout the application
+
+Navigation and UI:
+Login / Sign In button is inside the Account dropdown at the top-right corner
+When logged in, the Account dropdown shows:
+- Admin Dashboard
+- My Orders
+- Order Tracking
+- Wishlist
+- My Account
+- Sign Out
+
+Cart Button:
+Located in the top navigation bar near Account
+Shows a badge with the total number of cart items
+
+All Categories Dropdown:
+Located left of the search bar
+Categories:
+- Fashion
+- Groceries
+- Beauty
+- Footwear
+- Electronics
+- Jewellery
+- Gifts
+
+Navbar Links:
+- All Products
+- My Accounts
+- Order Tracking
+- Contact
+- Wishlist
+- Cart
+- Account
+
+My Account Page:
+Profile image can be changed by clicking on it
+Shows:
+- Full name
+- Name
+- Phone
+- Email
+- DOB
+
+Left Sidebar Options:
+- Change Password
+- Shipping Address
+- My Orders
+- Delete Account
+
+Email Verification:
+Users must verify their email before placing an order
+Email OTP verification is available from the top-left area of the account page
+
+Product Filters on All Products Page:
+Category
+Price range slider
+Rating from 1 to 5 stars
+
+Add to Cart Button:
+Visible on every product card under the product price
+
+Purpose:
+This project was built to showcase full-stack development skills and industry-standard e-commerce functionality.

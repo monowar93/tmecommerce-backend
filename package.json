@@ -5,7 +5,7 @@
   "scripts": {
     "build": "tsc",
     "start": "node ./dist/server.js",
-    "dev": "ts-node-dev --respawn --transpile-only ./src/server.ts",
+    "dev": "tsx watch ./src/server.ts",
     "lint": "npx eslint ./src",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -13,8 +13,10 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
+    "@ai-sdk/azure": "^3.0.54",
     "@ai-sdk/openai": "^3.0.53",
     "@google/generative-ai": "^0.24.1",
+    "@langchain/textsplitters": "^1.0.1",
     "@supabase/supabase-js": "^2.105.1",
     "ai": "^6.0.168",
     "axios": "^1.11.0",

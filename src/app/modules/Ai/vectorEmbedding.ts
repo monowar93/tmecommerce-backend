@@ -1,7 +1,7 @@
 import { tool } from "ai";
 import { z } from "zod";
 import { embed } from "ai";
-import { openai, supabase } from "../../config/ai";
+import { azureProvider, supabase } from "../../config/ai";
 import { envVars } from "../../config/env";
 
 const SIMILARITY_MATCH_COUNT = 5;
@@ -17,7 +17,7 @@ export const vectorDbTools = tool({
     try {
       // 1. Embed the query
       const { embedding } = await embed({
-        model: openai.embedding(EMBEDDING_MODEL_NAME),
+        model: azureProvider.embedding(EMBEDDING_MODEL_NAME),
         value: query,
       });
 

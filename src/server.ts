@@ -3,6 +3,7 @@ import mongoose from "mongoose";
 import app from "./app";
 import { envVars } from "./app/config/env";
 import { connectRedis } from "./app/config/redis.config";
+import { createAndStoreEmbeddings } from "./app/embeddedData/embedAndStore";
 
 let server: Server;
 
@@ -22,6 +23,7 @@ const startServer = async () => {
 (async () => {
   await connectRedis();
   await startServer();
+  await createAndStoreEmbeddings("basic.txt");
 })();
 
 //unhandledRejection error

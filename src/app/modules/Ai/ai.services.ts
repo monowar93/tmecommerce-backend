@@ -4,6 +4,7 @@ import { envVars } from "../../config/env";
 import { vectorDbTools } from "./vectorEmbedding";
 import { getRetrievalVectorPrompt } from "./prompt";
 import type { ModelMessage, StreamTextResult } from "ai";
+import { azureProvider } from "../../config/ai";
 
 const MAX_TOOL_STEPS = 3;
 const aiModel = envVars.AI_MODEL;
@@ -29,7 +30,7 @@ const chat = async (
   for (let attempt = 1; attempt <= retries; attempt++) {
     try {
       const result = streamText({
-        model: openai(aiModel),
+        model: azureProvider(aiModel),
         tools,
         stopWhen: stepCountIs(MAX_TOOL_STEPS),
         system: getRetrievalVectorPrompt(),
