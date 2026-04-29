@@ -37,7 +37,12 @@ interface EnvConfig {
   UPSTASH_REDIS_TTL: string;
   STRIPE_SECRET_KEY: string;
   STRIPE_PUBLIC_KEY: string;
-  GEMINI_API_KEY: string;
+  OPENAI_API_KEY: string;
+  AI_URL: string;
+  AI_MODEL: string;
+  EMBEDDING_MODEL_NAME: string;
+  SUPABASE_URL: string;
+  SUPABASE_SERVICE_ROLE_KEY: string;
 }
 
 const loadEnvVariables = (): EnvConfig => {
@@ -72,7 +77,12 @@ const loadEnvVariables = (): EnvConfig => {
     "UPSTASH_REDIS_TTL",
     "STRIPE_SECRET_KEY",
     "STRIPE_PUBLIC_KEY",
-    "GEMINI_API_KEY",
+    "OPENAI_API_KEY",
+    "AI_URL",
+    "AI_MODEL",
+    "EMBEDDING_MODEL_NAME",
+    "SUPABASE_URL",
+    "SUPABASE_SERVICE_ROLE_KEY",
   ];
 
   requiredEnvVariables.forEach((key) => {
@@ -117,7 +127,12 @@ const loadEnvVariables = (): EnvConfig => {
     UPSTASH_REDIS_TTL: process.env.UPSTASH_REDIS_TTL as string,
     STRIPE_SECRET_KEY: process.env.STRIPE_SECRET_KEY as string,
     STRIPE_PUBLIC_KEY: process.env.STRIPE_PUBLIC_KEY as string,
-    GEMINI_API_KEY: process.env.GEMINI_API_KEY as string,
+    OPENAI_API_KEY: process.env.OPENAI_API_KEY as string,
+    AI_URL: process.env.AI_URL as string,
+    AI_MODEL: process.env.AI_MODEL as string,
+    EMBEDDING_MODEL_NAME: process.env.EMBEDDING_MODEL_NAME as string,
+    SUPABASE_URL: process.env.SUPABASE_URL as string,
+    SUPABASE_SERVICE_ROLE_KEY: process.env.SUPABASE_SERVICE_ROLE_KEY as string,
   };
 };
 export const envVars = loadEnvVariables();
