@@ -1,12 +1,11 @@
 import { streamText, stepCountIs } from "ai";
-import { openai } from "@ai-sdk/openai";
 import { envVars } from "../../config/env";
 import { vectorDbTools } from "./vectorEmbedding";
 import { getRetrievalVectorPrompt } from "./prompt";
 import type { ModelMessage, StreamTextResult } from "ai";
 import { azureProvider } from "../../config/ai";
 
-const MAX_TOOL_STEPS = 3;
+const MAX_TOOL_STEPS = 4;
 const aiModel = envVars.AI_MODEL;
 const tools = {
   knowledgeBaseSearch: vectorDbTools,
@@ -32,9 +31,42 @@ const chat = async (
       const result = streamText({
         model: azureProvider(aiModel),
         tools,
+        toolChoice: "auto",
         stopWhen: stepCountIs(MAX_TOOL_STEPS),
         system: getRetrievalVectorPrompt(),
         messages,
+        onStepFinish: ({ toolCalls, toolResults, finishReason, usage }) => {
+          if (toolCalls && toolCalls.length > 0) {
+            console.log(
+              "[AI] Tool calls in step:",
+              toolCalls.map((tc: any) => ({
+                name: tc.toolName,
+                input: tc.input,
+              })),
+            );
+          }
+          if (toolResults && toolResults.length > 0) {
+            console.log(
+              "[AI] Tool results in step:",
+              toolResults.map((tr: any) => ({
+                name: tr.toolName,
+                outputPreview:
+                  typeof tr.output === "string"
+                    ? tr.output.slice(0, 200)
+                    : JSON.stringify(tr.output).slice(0, 400),
+              })),
+            );
+          }
+          console.log(
+            "[AI] Step finished. reason:",
+            finishReason,
+            "usage:",
+            usage,
+          );
+        },
+        onError: ({ error }) => {
+          console.error("[AI] Stream error:", error);
+        },
       });
 
       return result;
