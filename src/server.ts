@@ -23,7 +23,7 @@ const startServer = async () => {
 (async () => {
   await connectRedis();
   await startServer();
-  await createAndStoreEmbeddings("basic.txt");
+  // await createAndStoreEmbeddings("basic.txt");
 })();
 
 //unhandledRejection error
