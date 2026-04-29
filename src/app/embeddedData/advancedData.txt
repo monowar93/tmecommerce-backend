@@ -1,0 +1,108 @@
+TM-ECommerce Advanced Documentation Context
+
+How to Answer User Questions (site help behavior):
+- Explain features first, then point to exact UI locations (top navbar, utility nav, footer, account dropdown, cart modal) so users can find buttons fast.
+- When a user cannot find a button, mention the nearest UI anchor and device context (desktop vs mobile) and the exact label shown in the UI.
+- Prefer short guidance like: "Top navbar, right side" or "Utility nav under the search bar".
+- For account-only features, remind the user to sign in if the button is hidden when logged out.
+
+UI Layout and Global Elements:
+- Main layout includes: Navbar (top), page content, AI chat messenger widget, TopFooter feature tiles, and Footer.
+- Navbar has a scrolling promo banner ("Summer Sale: Up to 70% off selected items") and stays sticky at the top.
+- TopFooter feature tiles highlight: Free Shipping (orders over $100), 30 Days Returns (exchange), Secured Payment, Special Gifts (first order), and 24/7 Support.
+- Footer includes Contact details (Sylhet, Bangladesh; LinkedIn; Facebook; email: tarekmonowar2332@gmail.com), Quick Links, and Newsletter subscription.
+
+Navigation and Button Placement:
+- Desktop Navbar: left logo; center search bar; right icons for Contact, Cart, and Account (or Sign In when logged out).
+- Search area: "All Categories" button on the left of the search input; search input with clear (x) on the right; green search button (magnifier) at far right.
+- Cart button opens a slide-over cart modal; shows badge with item count.
+- Account button shows user avatar and opens a dropdown (My Orders, Order Tracking, Wishlist, My Account, Sign Out; Admin Dashboard for admin roles).
+- Contact button opens a quick-contact dropdown (LinkedIn, Messenger, Email).
+- Utility nav (under the navbar) has:
+  - Left: "All Categories" dropdown (Fashion, Groceries, Beauty, Footwear, Electronics, Jewellery, Gifts).
+  - Center: All Products, My Accounts, Order Tracking, Contact, Wishlist (with badge).
+  - Right: Support phone +099620187 and "24/7 Customer support".
+- Mobile: hamburger menu opens a left slide-in sidebar with categories and links. If logged out: Home, Sign In, Contact, About Us, Wishlist, FAQ. If logged in: Home, My Account, My Orders, Wishlist, Log Out.
+- If a user says "I cannot find Cart": it is the cart icon in the top navbar (right side), and it opens the cart slide-over.
+- If a user says "I cannot find Sign In": it appears in the top navbar (right side) when logged out; on mobile it is inside the slide-in menu.
+- If a user says "I cannot find Order Tracking": it is in the utility nav center, and inside the Account dropdown when logged in.
+
+Routes and Pages:
+- Public pages: / (Home), /all-products, /product/:id, /cart, /wishlist, /order-tracking, /my-account, /sign-in, /reset-password, /blog/:id.
+- Protected customer pages: /my-orders, /shipping, /pay, /order-details/:id.
+- Footer content pages: /footerLink/:id with ids: about-us, privacy-policy, terms-conditions, faqs, order-tracking, contact.
+
+Search, Filters, and Product Discovery:
+- Global search is in the top navbar; results appear in a dropdown list with name/brand/category match hints.
+- All Products page supports:
+  - Filters: categories, ratings (1-5 stars), price range slider (discount price min/max).
+  - Sorting: price low-to-high, high-to-low, or newest (default).
+  - Layout toggle: grid or list view.
+  - Pagination.
+- Category shortcuts: "All Categories" dropdown links to /all-products with category query.
+- Search results can be opened from the dropdown by clicking a product name.
+
+Product Details and Reviews:
+- Product details page includes thumbnail gallery, zoom-on-hover main image, brand, ratings, stock, and discounted pricing.
+- Quantity selector with +/- and min 1 validation.
+- Actions: Add to Cart and Add to Wishlist (wishlist button hidden on small screens).
+- Reviews section and write-review area, plus related products section.
+- Stock validation prevents adding beyond available stock.
+- Price displays show original price and discounted price.
+
+Cart, Coupons, Shipping, and Checkout:
+- Cart modal: slide-over with quantity +/- and remove controls, subtotal, and "Sign In & Checkout" or "Proceed" button.
+- Cart page supports coupon entry; example promo shown: NEW20 for $20 off. Totals show subtotal, shipping charges, discount, and total.
+- Checkout flow: Cart -> Shipping -> Pay.
+- Shipping page collects name, phone, address, city, pin code; creates a payment intent and then routes to /pay.
+- Payment page uses Stripe PaymentElement (cards only) and confirms payment; on success, creates an order and navigates to /my-orders.
+- Stripe demo card can be used on the payment form for test orders.
+- If the cart is empty, users are redirected to All Products with an info toast.
+- Payment flow shows a secure checkout label and Stripe branding.
+
+Orders and Tracking:
+- My Orders page shows a table with order ID, items count, discount, amount, status, and actions.
+- Actions: Details, Invoice (shows warning for free card payments), and Print (printable invoice).
+- Order Tracking page accepts an Order ID and shows status steps: Processing, Shipped, Delivered; Cancelled is handled separately.
+- Order tracking input field shows an error if the order ID is invalid.
+
+Account and Authentication:
+- Sign In/Sign Up supports email/password and Google OAuth; GitHub/Facebook buttons show "coming soon" toasts.
+- Password rules on sign up: 8+ chars, uppercase, lowercase, special character.
+- Reset password flow uses token and id in URL; enforces uppercase, number, and special character.
+- My Account page has a left menu: Account, Change Password, Shipping Address, My Orders, Delete Account.
+- Profile image can be updated by clicking the camera icon on the avatar.
+- Email verification is required before placing orders; OTP verification is available on the account page.
+
+Wishlist:
+- Wishlist page supports grid/list view, clear wishlist, and quick actions (view, remove, add to cart).
+- Empty state message appears when no wishlist items exist.
+- Wishlist count appears as a badge in the utility nav.
+
+Footer Policies and Help Content:
+- About Us: store overview, quality, deals, fast delivery, secure checkout.
+- Privacy Policy: data collection and usage summary.
+- Terms & Conditions: returns within 30 days, pricing updates, order cancellation for stock/fraud checks, governed by Bangladeshi law.
+- FAQs: account required, delivery timelines, return steps, payment methods, and support email.
+- Contact: support email, phone, live chat hours, Facebook link, office location in Sylhet.
+
+Admin Features (do not list admin routes or admin UI navigation):
+- Admins can view real-time stats and analytics for revenue, orders, and customers.
+- Admins can manage products: add new products, edit existing products, and remove products.
+- Admins can manage orders: view order lists, update order status (Processing, Shipped, Delivered, Cancelled).
+- Admins can manage users: view all users, block/unblock users, and verify admin roles.
+- Admins can manage coupons and discounts, and review stock status.
+
+Tech Stack and Libraries (from codebase):
+- Frontend: React, TypeScript, Vite, React Router, Tailwind CSS, shadcn/ui, Redux Toolkit + RTK Query.
+- Backend: Node.js, Express, MongoDB, REST API, Stripe payments.
+- UI/Utilities: lucide-react icons, react-icons, react-toastify, axios.
+- Charts/Analytics: Chart.js / Recharts.
+- Media and uploads: Cloudinary for product images.
+- Performance: Redis caching in the backend.
+- Security: bcrypt password hashing, input validation, sanitization, JWT sessions in cookies.
+
+Style and Theme Colors:
+- Primary green: #2C742F (dark: #236027, light: #368939).
+- Secondary yellow: #E6B31E (dark: #C99B19, light: #F4C439).
+- Neutral text: #666666; headings: #333333; backgrounds: #F9F9F9, #F3F3F3, #F3F9F1.
