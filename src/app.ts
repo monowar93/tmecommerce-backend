@@ -12,6 +12,9 @@ import { router } from "./app/routes";
 
 const app = express();
 const redisUrl = envVars.UPSTASH_REDIS_URL || "";
+const allowedOrigins = envVars.FRONTEND_URL
+  ? envVars.FRONTEND_URL.split(",")
+  : [];
 
 export const UpstashRedis = connectUpstash(redisUrl);
 
@@ -22,7 +25,13 @@ app.use(cookieParser());
 app.set("trust proxy", 1);
 app.use(
   cors({
-    origin: envVars.FRONTEND_URL,
+    origin: (origin, callback) => {
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error("Not allowed by CORS"));
+      }
+    },
     credentials: true,
   }),
 );
