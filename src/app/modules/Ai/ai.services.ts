@@ -11,6 +11,7 @@ const tools = {
   knowledgeBaseSearch: vectorDbTools,
 };
 
+// This function sends a message to the AI model and returns a stream
 const chat = async (
   message: string,
   retries = 3,
