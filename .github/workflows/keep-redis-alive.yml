@@ -41,6 +41,5 @@ jobs:
             -p "${REDIS_PORT}" \
             --user "${REDIS_USERNAME}" \
             -a "${REDIS_PASSWORD}" \
-            --tls \
             PING
           echo "Redis Cloud PONG received."
